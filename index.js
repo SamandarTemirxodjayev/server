@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const https = require("https");
 const fs = require("fs");
+const os = require("os");
 
 const router = require("./routes/router.js");
 
@@ -13,11 +14,24 @@ const options = {
 };
 
 const port = 443;
+const defaultPort = 3021;
 
 app.use(cors());
 app.use(express.json());
 app.use("/api", router);
-
+function getServerIPs() {
+  const interfaces = os.networkInterfaces();
+  const ips = [];
+  for (const interfaceName in interfaces) {
+    const iface = interfaces[interfaceName];
+    for (const alias of iface) {
+      if (alias.family === "IPv4" && alias.internal === false) {
+        ips.push(alias.address);
+      }
+    }
+  }
+  return ips;
+}
 mongoose.set("strictQuery", false);
 mongoose
   .connect(
@@ -29,11 +43,19 @@ mongoose
   )
   .then(() => {
     console.log("Server is connecting on MongoDB");
-    app.listen(3021, () => {
-      console.log("Server is running on http://localhost:3021");
-    });
-    https.createServer(options, app).listen(port, () => {
-      console.log("Server is running on https://localhost");
+    app.listen(defaultPort, () => {
+      console.log(`Server is running on http://localhost:${defaultPort}`);
+      const serverIPs = getServerIPs();
+      serverIPs.forEach((ip, index) => {
+        console.log(`Server is running on http://${ip}:${defaultPort}`);
+      });
+      https.createServer(options, app).listen(port, () => {
+        console.log("Server is running on https://localhost");
+        const serverIPs = getServerIPs();
+        serverIPs.forEach((ip, index) => {
+          console.log(`Server is running on https://${ip}`);
+        });
+      });
     });
   })
   .catch((error) => {
