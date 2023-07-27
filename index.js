@@ -14,6 +14,7 @@ const options = {
 };
 
 const port = 443;
+const telegramPort = 3021;
 const defaultPort = 80;
 
 app.use(cors());
@@ -55,7 +56,13 @@ mongoose
         serverIPs.forEach((ip) => {
           console.log(`Server is running on https://${ip}`);
         });
-        require("./bot.js");
+        
+        app.listen(telegramPort, () => {
+          require("./bot.js");
+          serverIPs.forEach((ip) => {
+            console.log(`TelegramBot is running on https://${ip}:${telegramPort}`);
+          });
+        });
       });
     });
   })

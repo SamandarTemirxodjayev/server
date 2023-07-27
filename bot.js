@@ -1,16 +1,12 @@
 const TelegramBot = require("node-telegram-bot-api");
 const token = "6377123656:AAG9BXLL0SqZUE1XUq48K-020rd3ub8v1c8";
 const bot = new TelegramBot(token, { polling: true });
-const express = require("express");
 const Users = require("./models/Users");
 const { default: axios } = require("axios");
 const Answers = require("./models/Answers");
 const moment = require("moment");
-const app = express();
 
-app.listen(3022, () => {
-  console.log("Telegram server is running on port 3022");
-});
+
 bot.onText(/\/start/, async (msg) => {
   try {
     const user = await Users.findOne({tg_id: msg.chat.id});
