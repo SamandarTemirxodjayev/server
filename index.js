@@ -46,15 +46,16 @@ mongoose
     app.listen(defaultPort, () => {
       console.log(`Server is running on http://localhost:${defaultPort}`);
       const serverIPs = getServerIPs();
-      serverIPs.forEach((ip, index) => {
+      serverIPs.forEach((ip) => {
         console.log(`Server is running on http://${ip}:${defaultPort}`);
       });
       https.createServer(options, app).listen(port, () => {
         console.log("Server is running on https://localhost");
         const serverIPs = getServerIPs();
-        serverIPs.forEach((ip, index) => {
+        serverIPs.forEach((ip) => {
           console.log(`Server is running on https://${ip}`);
         });
+        require("./bot.js");
       });
     });
   })
