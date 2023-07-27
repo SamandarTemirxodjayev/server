@@ -15,7 +15,7 @@ bot.onText(/\/start/, async (msg) => {
   try {
     const user = await Users.findOne({tg_id: msg.chat.id});
     if (!user) {
-      bot.sendMessage(msg.chat.id, "Telefon raqamingizni yuboring", {
+      await bot.sendMessage(msg.chat.id, "Telefon raqamingizni yuboring", {
         parse_mode: "HTML",
         reply_markup: {
           resize_keyboard: true,
@@ -31,7 +31,7 @@ bot.onText(/\/start/, async (msg) => {
         }
       });
     }else{
-      bot.sendMessage(msg.chat.id, "Salom", {
+      await bot.sendMessage(msg.chat.id, "Salom", {
         parse_mode: "HTML",
         reply_markup: {
           resize_keyboard: true,
@@ -59,7 +59,7 @@ bot.on("contact", async (msg) => {
       user.tg_id = msg.chat.id;
       let code;
       if (user.verification_code) {
-        bot.sendMessage(chat.id, `Salom ${user.name}, raqamingizni tekshirish uchun sms orqali kelgan kodni kiriting`,{
+        await bot.sendMessage(chat.id, `Salom ${user.name}, raqamingizni tekshirish uchun sms orqali kelgan kodni kiriting`,{
           reply_markup: {
             remove_keyboard: true,
           }
@@ -102,12 +102,12 @@ bot.on("message", async (msg) => {
     if (msg.text === user.verification_code) {
       user.data = "";
       await user.save();
-      bot.sendMessage(msg.chat.id, "Sizning telefon raqamingiz tasdiqlandi", {
+      await bot.sendMessage(msg.chat.id, "Sizning telefon raqamingiz tasdiqlandi", {
         reply_markup: {
           remove_keyboard: true,
         },
       });
-      bot.sendMessage(msg.chat.id, "Botimizdan foydalanishingiz mumkin", {
+      await bot.sendMessage(msg.chat.id, "Botimizdan foydalanishingiz mumkin", {
         reply_markup: {
           keyboard: [
             [
@@ -119,7 +119,7 @@ bot.on("message", async (msg) => {
         },
       });
     } else {
-      bot.sendMessage(msg.chat.id, "Tekshiruv kodini xato");
+      await bot.sendMessage(msg.chat.id, "Tekshiruv kodini xato");
     }
     user.verification_code = "";
     await user.save();
@@ -127,28 +127,27 @@ bot.on("message", async (msg) => {
     console.log("User not found or not in verification state.");
   }
   if (msg.text === "Analiz javoblarini ko'rish") {
-    bot.sendMessage(msg.chat.id, "Yuklanmoqda...");
     try {
       const user = await Users.findOne({ tg_id: msg.chat.id });
       if (!user) {
-        bot.sendMessage(msg.chat.id, "Foydalanuvchi topilmadi");
+        await bot.sendMessage(msg.chat.id, "Foydalanuvchi topilmadi");
         return;
       }
 
       const answers = await Answers.find({ id: user._id });
       if (!answers || answers.length === 0) {
-        bot.sendMessage(msg.chat.id, "Javoblar topilmadi");
+        await bot.sendMessage(msg.chat.id, "Javoblar topilmadi");
       } else {
         let allAnswersText = "Javoblar:\n";
         answers.forEach((answer) => {
           const formattedDate = moment(answer.date).format("HH:mm DD.MM.YYYY");
           allAnswersText += `\n${answer.text}\nAnaliz javobi chiqqan vaqti: ${formattedDate}\n`;
         });
-        bot.sendMessage(msg.chat.id, allAnswersText);
+        await bot.sendMessage(msg.chat.id, allAnswersText);
       }
     } catch (error) {
       console.log(error);
-      bot.sendMessage(msg.chat.id, "Ma'lumotlar olishda xatolik");
+      await bot.sendMessage(msg.chat.id, "Ma'lumotlar olishda xatolik");
     }
   }
 });
