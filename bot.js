@@ -109,7 +109,6 @@ bot.on("message", async (msg) => {
       });
       bot.sendMessage(msg.chat.id, "Botimizdan foydalanishingiz mumkin", {
         reply_markup: {
-          resize_keyboard: true,
           keyboard: [
             [
               {
