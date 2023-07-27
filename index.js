@@ -14,7 +14,7 @@ const options = {
 };
 
 const port = 443;
-const defaultPort = 3021;
+const defaultPort = 80;
 
 app.use(cors());
 app.use(express.json());
