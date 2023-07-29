@@ -5,7 +5,7 @@ const AnswersSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: "users",
   },
-  text: {
+  uuid: {
     type: String,
   },
   date: {

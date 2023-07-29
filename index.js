@@ -60,7 +60,7 @@ mongoose
         app.listen(telegramPort, () => {
           require("./bot.js");
           serverIPs.forEach((ip) => {
-            console.log(`TelegramBot is running on https://${ip}:${telegramPort}`);
+            console.log(`TelegramBot is running on http://${ip}:${telegramPort}`);
           });
         });
       });

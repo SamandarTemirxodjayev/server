@@ -4,8 +4,9 @@ const bot = new TelegramBot(token, { polling: true });
 const Users = require("./models/Users");
 const { default: axios } = require("axios");
 const Answers = require("./models/Answers");
+const path = require("path");
+const fs = require("fs");
 const moment = require("moment");
-
 
 bot.onText(/\/start/, async (msg) => {
   try {
@@ -105,6 +106,7 @@ bot.on("message", async (msg) => {
       });
       await bot.sendMessage(msg.chat.id, "Botimizdan foydalanishingiz mumkin", {
         reply_markup: {
+          resize_keyboard: true,
           keyboard: [
             [
               {
@@ -114,10 +116,10 @@ bot.on("message", async (msg) => {
           ],
         },
       });
+      user.verification_code = "";
     } else {
       await bot.sendMessage(msg.chat.id, "Tekshiruv kodini xato");
     }
-    user.verification_code = "";
     await user.save();
   } else {
     console.log("User not found or not in verification state.");
@@ -129,17 +131,20 @@ bot.on("message", async (msg) => {
         await bot.sendMessage(msg.chat.id, "Foydalanuvchi topilmadi");
         return;
       }
-
+  
       const answers = await Answers.find({ id: user._id });
       if (!answers || answers.length === 0) {
         await bot.sendMessage(msg.chat.id, "Javoblar topilmadi");
       } else {
-        let allAnswersText = "Javoblar:\n";
-        answers.forEach((answer) => {
-          const formattedDate = moment(answer.date).format("HH:mm DD.MM.YYYY");
-          allAnswersText += `\n${answer.text}\nAnaliz javobi chiqqan vaqti: ${formattedDate}\n`;
-        });
-        await bot.sendMessage(msg.chat.id, allAnswersText);
+        for (const answer of answers) {
+          const filePath = path.join("./public", `${answer.uuid}.pdf`);
+          if (fs.existsSync(filePath)) {
+            const formattedDate = moment(answer.date).format("HH:mm DD.MM.YYYY");
+            await bot.sendDocument(msg.chat.id, filePath, { caption: formattedDate });
+          } else {
+            await bot.sendMessage(msg.chat.id, "Fayl topilmadi");
+          }
+        }
       }
     } catch (error) {
       console.log(error);
