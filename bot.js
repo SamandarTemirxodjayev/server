@@ -136,6 +136,7 @@ bot.on("message", async (msg) => {
       if (!answers || answers.length === 0) {
         await bot.sendMessage(msg.chat.id, "Javoblar topilmadi");
       } else {
+        await bot.sendMessage(msg.chat.id, "Yuborilmoqda...");
         for (const answer of answers) {
           const filePath = path.join("./public", `${answer.uuid}.pdf`);
           if (fs.existsSync(filePath)) {
