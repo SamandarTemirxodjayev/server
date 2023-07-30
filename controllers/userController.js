@@ -10,7 +10,12 @@ exports.index = (req, res) => {
   res.json({ message: "Hello World!" });
 };
 exports.userCreate = async (req, res) => {
+  const { phone_number } = req.body;
   try {
+    const userCheck = await Users.findOne({ phone_number: phone_number });
+    if (userCheck) {
+      return res.status(400).json({ message: "Ushbu telefon raqam orqali ro'yxatdan o'tilgan" });
+    }
     const user = new Users({
       name: req.body.name,
       surname: req.body.surname,
@@ -54,7 +59,8 @@ exports.usersEditById = async (req, res) => {
         birth_date: req.body.birth_date,
         gender: req.body.gender,
         phone_number: req.body.phone_number,
-        id_card: req.body.id_card
+        id_card: req.body.id_card,
+        tg_id: ""
       },
     );
     return res.json(users);
