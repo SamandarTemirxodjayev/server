@@ -105,7 +105,7 @@ exports.addAnswer = async (req, res) => {
 };
 exports.getAnswerById = async (req, res) => {
   try {
-    const answer = await Answers.findById(req.params.id);
+    const answer = await Answers.find({id: req.params.id});
     return res.json(answer);
   } catch (error) {
     return res.status(500).json({ message: error.message });
