@@ -43,6 +43,26 @@ exports.usersGetById = async (req, res) => {
   }
 };
 
+exports.usersEditById = async (req, res) => {
+  try {
+    const users = await Users.findByIdAndUpdate(
+      req.params.id,
+      {
+        name: req.body.name,
+        surname: req.body.surname,
+        fatherName: req.body.fatherName,
+        birth_date: req.body.birth_date,
+        gender: req.body.gender,
+        phone_number: req.body.phone_number,
+        id_card: req.body.id_card
+      },
+    );
+    return res.json(users);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 exports.getAnswer = async (req, res) => {
   try {
     const answers = await Answers.find().populate("id");
