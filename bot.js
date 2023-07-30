@@ -128,7 +128,7 @@ bot.on("message", async (msg) => {
     try {
       const user = await Users.findOne({ tg_id: msg.chat.id });
       if (!user) {
-        await bot.sendMessage(msg.chat.id, "Foydalanuvchi topilmadi");
+        await bot.sendMessage(msg.chat.id, "Foydalanuvchi topilmadi, /start buyrug'i orqali botni qayta sozlang");
         return;
       }
   
