@@ -34,6 +34,14 @@ exports.usersGet = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+exports.usersGetById = async (req, res) => {
+  try {
+    const users = await Users.findById(req.params.id);
+    return res.json(users);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
 
 exports.getAnswer = async (req, res) => {
   try {
