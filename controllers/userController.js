@@ -103,3 +103,11 @@ exports.addAnswer = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+exports.getAnswerById = async (req, res) => {
+  try {
+    const answer = await Answers.findById(req.params.id);
+    return res.json(answer);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
