@@ -11,15 +11,6 @@ const userSchema = new mongoose.Schema({
   surname: {
     type: String,
   },
-  fatherName: {
-    type: String,
-  },
-  birth_date: {
-    type: String,
-  },
-  gender: {
-    type: String,
-  },
   phone_number: {
     type: String,
   },
