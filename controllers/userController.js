@@ -52,9 +52,6 @@ exports.usersEditById = async (req, res) => {
       {
         name: req.body.name,
         surname: req.body.surname,
-        fatherName: req.body.fatherName,
-        birth_date: req.body.birth_date,
-        gender: req.body.gender,
         phone_number: req.body.phone_number,
         id_card: req.body.id_card,
         tg_id: ""
