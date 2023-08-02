@@ -11,7 +11,7 @@ const moment = require("moment");
 bot.onText(/\/start/, async (msg) => {
   try {
     const user = await Users.findOne({tg_id: msg.chat.id});
-    if (!user) {
+    if (!user || user.data === "verification") {
       await bot.sendMessage(msg.chat.id, "Telefon raqamingizni yuboring", {
         parse_mode: "HTML",
         reply_markup: {
