@@ -9,8 +9,8 @@ const router = require("./routes/router.js");
 
 const app = express();
 const options = {
-  key:fs.readFileSync("./keys/key.pem"),
-  cert:fs.readFileSync("./keys/cert.pem")
+  key: fs.readFileSync("/etc/letsencrypt/live/arkengenerator.uz/privkey.pem"),
+  cert: fs.readFileSync("/etc/letsencrypt/live/arkengenerator.uz/cert.pem")
 };
 
 const port = 443;
